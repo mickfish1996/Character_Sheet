@@ -7,9 +7,49 @@ firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
-results = db.collection("users").where("email", "==", "mickfish1996@gmail.com").get()
-data = None
-for result in results:
-    data = result.to_dict()
+def get_user_email():
+    email = input("Please enter your email: ")
+    
+    return email
 
-print(data)
+def display(data):
+    for key in data:
+        print(f"{key}: ", end ="")
+    
+def display_users(db, email):
+    results = db.collection("users").where("email", "==", email).get()
+    for result in results:
+        id = result.id
+        
+    result = db.collection("users").document(id).get()
+    
+    data = result.to_dict()
+    
+    data = data["Character Name"]
+    i = 1
+    
+    print("Characters")
+    for key in data:
+        print(f"\t{i}. {key}")
+        i += 1
+        
+    characterName = input("Character Name: ")
+    display(data[characterName])
+    
+    
+def main():   
+    email = get_user_email()  
+
+    print("1. choose character to display")
+    choice = int(input("\tOption: "))  
+
+    if choice == 1:
+        display_users(db,email)
+        
+if __name__ == "__main__":
+    main()
+    
+        
+    
+
+
